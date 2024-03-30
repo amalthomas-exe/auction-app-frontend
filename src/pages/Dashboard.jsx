@@ -10,17 +10,27 @@ const Dashboard = () => {
   const navigate = useNavigate()
 
   useEffect(()=>{
-    console.log(loginState)
-    if(!loginState){
+    if(!localStorage.getItem('bidGenieToken')){
       navigate('/login')
     }
   },[])
 
   return (
-    <div className='bg-gray w-full h-screen'>
+    <div className='bg-gray w-full min-h-full'>
       <Navbar />
       <div className="mt-3 px-5 py-5">
         <h1 className="text-xl text-slate-800 font-semibold">Trending auctions 🔥:</h1>
+        <section>
+          <div className='flex flex-row flex-wrap mt-5 space-y-4'>
+            {
+              [1, 2, 3,4,5,6].map((item, index) => <AuctionCard key={index} />)
+            }
+          </div>
+        </section>
+      </div>
+
+      <div className="mt-3 px-5 py-5">
+        <h1 className="text-xl text-slate-800 font-semibold">Your auctions:</h1>
         <section>
           <div className='flex flex-row mt-5'>
             {

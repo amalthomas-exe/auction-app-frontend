@@ -7,9 +7,9 @@ import people from '../assets/people.png'
 const AuctionCard = (props) => {
     const {name, time, price, peopleCount} = props
     return (
-        <div className="rounded-xl drop-shadow-xl bg-bluegreen w-1/4 flex flex-col overflow-hidden mr-7">
-            <div className="overflow-hidden w-full">
-                <img src="https://via.placeholder.com/150" className='w-full h-full' alt="product" />
+        <div className="rounded-xl drop-shadow-2xl bg-bluegreen w-1/4 h-80 flex flex-col overflow-hidden mr-7">
+            <div className="overflow-hidden w-full h-3/4">
+                <img src="https://via.placeholder.com/100" className='w-full h-full' alt="product" />
             </div>
             <div className="flex flex-row p-3 justify-between">
                 <div className="flex flex-col">
@@ -19,7 +19,7 @@ const AuctionCard = (props) => {
                         <div className="ml-2 text-white text-sm">27 March 2024 - 10:30 AM</div>
                     </div>
                     <div className="flex flex-row items-center mt-2">
-                        <img src={cash} className='w-4 h-4' alt="" />
+                        <img src={cash} className='w-4 h-4' alt="cash" />
                         <div className="ml-2 text-white text-sm">$ 200</div>
                     </div>
                 </div>
