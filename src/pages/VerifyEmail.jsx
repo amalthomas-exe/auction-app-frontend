@@ -4,7 +4,7 @@ import logo from '../assets/logo.png'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { API_URL } from '../constants'
+import { API_URL_USER } from '../constants'
 import axios from 'axios'
 
 
@@ -25,7 +25,7 @@ const VerifyEmail = () => {
     const onSubmit = () => {
         //OTP Verification
         console.log(state)
-        axios.post(`${API_URL}/signup`, state)
+        axios.post(`${API_URL_USER}/signup`, state)
             .then(res => {
                 console.log(res)
                 if(res.data.status === 200){

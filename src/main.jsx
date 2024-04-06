@@ -13,6 +13,12 @@ import SignUpAddress from './pages/SignUpAddress.jsx';
 import VerifyEmail from './pages/VerifyEmail.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import UserState from './context/users/UserState.jsx';
+import CreateAuctionBasic from './pages/CreateAuction/CreateAuctionBasic.jsx';
+import CreateAuctionPrice from './pages/CreateAuction/CreateAuctionPrice.jsx';
+import CreateAuctionSchedule from './pages/CreateAuction/CreateAuctionSchedule.jsx';
+import CreateAuctionUpload from './pages/CreateAuction/CreateAuctionUpload.jsx';
+import ConfirmDetails from './pages/CreateAuction/ConfirmDetails.jsx';
+import Success from './pages/CreateAuction/Success.jsx';
 
 const router = createBrowserRouter([
   { path: '/', element: <Home /> },
@@ -21,6 +27,12 @@ const router = createBrowserRouter([
   { path: '/signup/address', element: <SignUpAddress /> },
   { path: '/signup/verify-email', element: <VerifyEmail /> },
   { path: '/dashboard', element: <Dashboard /> },
+  { path: '/create', element: <CreateAuctionBasic /> },
+  { path: '/create/price-details', element: <CreateAuctionPrice /> },
+  { path: '/create/schedule', element: <CreateAuctionSchedule /> },
+  { path: '/create/upload', element: <CreateAuctionUpload /> },
+  { path: '/create/confirm', element: <ConfirmDetails /> },
+  { path: '/create/success', element: <Success />},
   { path: '*', element: <div>404</div> },
 ])
 

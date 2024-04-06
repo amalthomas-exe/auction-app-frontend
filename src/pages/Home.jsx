@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div className='bg-gray w-full h-screen flex flex-col'>
       <Navbar />
-      <div className=' p-10 w-3/6 mt-32 box-border'>
+      <div className=' p-10 w-3/6 mt-28 box-border'>
         <h1 className='text-4xl'>Your one-stop solution for selling stuff online. </h1>
 
         <Link to="/dashboard" className=" drop-shadow-md py-2 px-6 flex flex-row items-center text-xl justify-center font-bold w-fit  text-white  bg-orange rounded-md mt-12 box-border">

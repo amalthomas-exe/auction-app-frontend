@@ -4,7 +4,7 @@ import { Link,useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { API_URL } from '../constants'
+import { API_URL_USER } from '../constants'
 import axios from 'axios'
 import userContext from '../context/users/userContext'
 
@@ -21,7 +21,7 @@ const Login = () => {
 
   const onSubmit = (data) => {
     console.log(data)
-    axios.post(`${API_URL}/login`, data)
+    axios.post(`${API_URL_USER}/login`, data)
       .then((res) => {
         console.log(res)
         if(res.data.status==200){

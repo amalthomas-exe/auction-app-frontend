@@ -1,31 +1,49 @@
 import userContext from './userContext';
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios';
-import { API_URL } from '../../constants';
+import { API_URL_USER } from '../../constants';
 
 const UserState = (props) => {
     const [loginState, setLoginState] = useState(false);
     const [auth_token, setAuthToken] = useState("");
-    const [user,setUser] = useState({}) 
+    const [user, setUser] = useState({})
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log("UserState")
-        if(localStorage.getItem('bidGenieToken')){
+        if (localStorage.getItem('bidGenieToken')) {
             setAuthToken(localStorage.getItem('bidGenieToken'))
             getUserFromToken(localStorage.getItem('bidGenieToken'))
             setLoginState(true)
         }
-    },[loginState])
+    }, [auth_token])
 
-    const getUserFromToken = (token) =>{
-        axios.get(`${API_URL}/user`,{
-            headers:{
-                "auth-token":token
+    const getUserFromToken = (token) => {
+        axios.get(`${API_URL_USER}/user`, {
+            headers: {
+                "auth-token": token
             },
-        }).then(res=>{
+        }).then(res => {
             console.log(res)
             setUser(res.data.user)
-        }).catch(err=>{
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    const checkIfValidAuthToken = (token) => {
+        axios.get(`${API_URL_USER}/user`, {
+            headers: {
+                "auth-token": token
+            },
+        }).then(res => {
+            console.log(res)
+            if(res.data.status==200){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }).catch(err => {
             console.log(err)
         })
     }
@@ -38,7 +56,8 @@ const UserState = (props) => {
             auth_token,
             setAuthToken,
             user,
-            setUser
+            setUser,
+            checkIfValidAuthToken
         }}>
             {props.children}
         </userContext.Provider>

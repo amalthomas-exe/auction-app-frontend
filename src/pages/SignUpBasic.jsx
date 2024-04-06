@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { API_URL } from '../constants'
+import { API_URL_USER } from '../constants'
 import axios from 'axios'
 
 const SignUpBasic = () => {
@@ -24,7 +24,7 @@ const SignUpBasic = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) })
 
   const onSubmit = (data) => {
-    axios.post(`${API_URL}/checkEmail`, {email:data.email}).then(res => {
+    axios.post(`${API_URL_USER}/checkEmail`, {email:data.email}).then(res => {
       if (res.data.status == 200) {
         navigate('/signup/address', {
           state: data
