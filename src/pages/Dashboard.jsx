@@ -1,20 +1,37 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext,useState } from 'react'
 import Navbar from '../components/Navbar'
 import AuctionCard from '../components/AuctionCard'
 import { useNavigate,Link } from 'react-router-dom'
 import userContext from '../context/users/userContext'
+import axios from 'axios'
+import { API_URL_AUCTION } from '../constants'
 
 
 const Dashboard = () => {
 
   const { loginState, checkIfValidAuthToken } = useContext(userContext)
+  const [auctions, setAuctions] = useState([])
   const navigate = useNavigate()
 
   useEffect(() => {
     if (!localStorage.getItem('bidGenieToken')) {
       navigate('/login')
+      return
     }
-  }, [])
+
+    axios.get(`${API_URL_AUCTION}/get-user-auctions`, {
+      headers: {
+        'auth-token': `${localStorage.getItem('bidGenieToken')}`
+      }
+    }).then((res) => {
+      console.log(res)
+      setAuctions(res.data.auctions)
+    }).catch((err) => {
+      console.log(err)
+    })
+    }, [])
+
+
 
   return (
     <div className='bg-gray w-full min-h-full'>
@@ -41,12 +58,12 @@ const Dashboard = () => {
         </section>
       </div>
 
-      <div className="mt-3 px-5 py-5">
+      <div className="mt-3 px-5 py-5 bg-gray-50">
         <h1 className="text-xl text-slate-800 font-semibold">Your auctions:</h1>
         <section>
-          <div className='flex flex-row mt-5'>
+          <div className='flex flex-row mt-5s'>
             {
-              [1, 2, 3].map((item, index) => <AuctionCard key={index} />)
+              auctions.map((auction, index) => <AuctionCard key={index} id={auction.auctionID} name={auction.name} time={auction.datetime} price={auction.startingPrice} peopleCount = {123} coverURL={auction.images[1]}/>)
             }
           </div>
         </section>

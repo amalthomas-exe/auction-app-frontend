@@ -40,11 +40,11 @@ const CreateAuctionBasic = () => {
               </div>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mt-5 text-black text-sm">Product name <span className='text-red-600'>*</span></div>
-                <input type="text" className="w-full py-2 px-4 mt-1 bg-gray-100 rounded-md border-none"  {...register('name')} />
+                <input type="text" className={`border w-full py-2 px-4 mt-1 bg-gray-100 ${errors.name ? 'border-red-500':"border-gray-100"} rounded-md `}  {...register('name')} />
                 {errors.name && <div className="text-red-500 text-sm mt-1">{errors.name?.message}</div>}
 
                 <div className="mt-5 text-black text-sm">Description <span className='text-red-600'>*</span></div>
-                <textarea className="w-full h-1/3 py-2 px-4 mt-1 bg-gray-100 rounded-md border-none" {...register('description',{
+                <textarea className={`border w-full h-1/3 py-2 px-4 mt-1 bg-gray-100 rounded-md ${errors.description ? 'border-red-500':"border-gray-100"} rounded-md focus:border-blue-600`} {...register('description',{
                     onChange:(e)=>{
                         setDescLength(e.target.value.trim().length)
                     }

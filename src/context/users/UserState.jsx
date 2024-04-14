@@ -17,6 +17,21 @@ const UserState = (props) => {
         }
     }, [auth_token])
 
+    const checkIfProperLoggedIn = async ()=>{
+        if(!localStorage.getItem('bidGenieToken')){
+            console.log("No token")
+            return false;
+        }
+        else if(!await checkIfValidAuthToken(localStorage.getItem('bidGenieToken'))){
+            console.log("Invalid token")
+            return false;
+        }
+        else{
+            console.log("Valid token")
+            return true;
+        }
+    }
+
     const getUserFromToken = (token) => {
         axios.get(`${API_URL_USER}/user`, {
             headers: {
@@ -30,17 +45,19 @@ const UserState = (props) => {
         })
     }
 
-    const checkIfValidAuthToken = (token) => {
-        axios.get(`${API_URL_USER}/user`, {
+    const checkIfValidAuthToken = async (token) => {
+        await axios.get(`${API_URL_USER}/user`, {
             headers: {
                 "auth-token": token
             },
         }).then(res => {
             console.log(res)
             if(res.data.status==200){
+                console.log("Valid auth-token")
                 return true;
             }
             else{
+                console.log("Invalid auth-token")
                 return false;
             }
         }).catch(err => {
@@ -57,7 +74,8 @@ const UserState = (props) => {
             setAuthToken,
             user,
             setUser,
-            checkIfValidAuthToken
+            checkIfValidAuthToken,
+            checkIfProperLoggedIn
         }}>
             {props.children}
         </userContext.Provider>

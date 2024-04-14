@@ -12,8 +12,7 @@ const CreateAuctionUpload = () => {
     const navigate = useNavigate();
     const { state } = useLocation()
     const [images, setImages] = useState([])
-    const urlArray = []
-    const [imageURLS, setImageURLS] = useState([])
+    const imageURLS = []
 
 
     const uploadImage = () => {
@@ -30,6 +29,7 @@ const CreateAuctionUpload = () => {
             const uploadTask = uploadBytesResumable(storageRef, image)
             uploadTask.on('state_changed',
                 (snapshot) => {
+                    console.log(snapshot)
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     switch (snapshot.state) {
                         case 'paused':
@@ -45,18 +45,20 @@ const CreateAuctionUpload = () => {
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        urlArray.push(downloadURL)
+                        console.log('File available at', downloadURL);
+                        imageURLS.push(downloadURL)
+                        console.log(imageURLS)
+                        if (imageURLS.length === images.length) {
+                            console.log("all sone")
+                            console.log(state)
+                            navigate('/create/confirm', {
+                                state: {
+                                    ...state,
+                                    images: imageURLS
+                                }
+                            })
+                        }
                     });
-                    if(urlArray.length === images.length - 1){
-                        console.log("all sone")
-                        console.log(state)
-                        navigate('/create/confirm', {
-                            state: {
-                                ...state,
-                                images: urlArray
-                            }
-                        })
-                    }
                 }
             );
         })
@@ -80,7 +82,9 @@ const CreateAuctionUpload = () => {
                             </div>
 
                             <div className="text-sm font-slate-400 mt-2">
-                                or
+                                or {imageURLS.map((url) => {
+                                    return `${url}`
+                                })}
                             </div>
 
                             <div className="flex flex-row items-center justify-center mt-2">

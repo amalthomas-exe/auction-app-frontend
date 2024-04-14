@@ -19,6 +19,7 @@ import CreateAuctionSchedule from './pages/CreateAuction/CreateAuctionSchedule.j
 import CreateAuctionUpload from './pages/CreateAuction/CreateAuctionUpload.jsx';
 import ConfirmDetails from './pages/CreateAuction/ConfirmDetails.jsx';
 import Success from './pages/CreateAuction/Success.jsx';
+import AuctionDetails from './pages/AuctionDetails.jsx';
 
 const router = createBrowserRouter([
   { path: '/', element: <Home /> },
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
   { path: '/create/upload', element: <CreateAuctionUpload /> },
   { path: '/create/confirm', element: <ConfirmDetails /> },
   { path: '/create/success', element: <Success />},
+  {path:"/auction/:id",element:<AuctionDetails/>},
   { path: '*', element: <div>404</div> },
 ])
 
