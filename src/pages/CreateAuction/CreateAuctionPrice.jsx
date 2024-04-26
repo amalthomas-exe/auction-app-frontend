@@ -4,11 +4,13 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useNavigate,useLocation } from 'react-router-dom'
+import LoadingBar from 'react-top-loading-bar'
 
 
 const CreateAuctionPrice = () => {
     const navigate = useNavigate();
     const {state} = useLocation()
+    const [progress, setprogress] = useState(0)
 
     const schema = z.object({
         // Define your schema properties here
@@ -22,6 +24,7 @@ const CreateAuctionPrice = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) })
 
     const onSubmit = (data) => {
+        setprogress(100)
         console.log({...state,...data})
         navigate("/create/schedule", {
             state: {...state,...data}
@@ -31,6 +34,7 @@ const CreateAuctionPrice = () => {
     return (
         <div className='w-full min-h-screen bg-gray'>
             <Navbar />
+            <LoadingBar color='#f11946' progress={0} onLoaderFinished={() => { setprogress(0) }} />
             <div className="flex flex-col mt-10 mb-10 w-full h-full items-center">
                 <div className="flex flex-row w-3/5 bg-gray-50  rounded-lg  overflow-hidden drop-shadow-lg">
                     <div className="w-5/12 bg-orange">

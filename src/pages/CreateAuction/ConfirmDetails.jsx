@@ -1,14 +1,16 @@
-import React,{useContext} from 'react'
+import React,{useContext,useState} from 'react'
 import Navbar from '../../components/Navbar'
 import { useLocation,useNavigate } from 'react-router-dom'
 import userContext from '../../context/users/userContext'
 import axios from 'axios'
 import { API_URL_AUCTION } from '../../constants'
+import LoadingBar from 'react-top-loading-bar'
 
 const ConfirmDetails = () => {
 
     const {user,auth_token} = useContext(userContext)
     const navigate = useNavigate()
+    const [progress, setProgress] = useState(0)
 
     const { state } = useLocation()
     console.log(state)
@@ -21,6 +23,7 @@ const ConfirmDetails = () => {
     }
 
     const handleConfirm = ()=>{
+        setProgress(50)
         let dateTime = convertDateTimeToUTC(state.date+" "+state.time)
         delete state.date
         delete state.time
@@ -34,8 +37,10 @@ const ConfirmDetails = () => {
             },
             data:state
             }).then(res=>{
+                setProgress(70)
                 console.log(res)
                 if(res.data.status==200){
+                    setProgress(100)
                     navigate("/create/success",{
                         state:state
                     })
@@ -52,6 +57,7 @@ const ConfirmDetails = () => {
     return (
         <div className='w-full min-h-screen bg-gray'>
             <Navbar />
+            <LoadingBar color='#f11946' progress={progress} onLoaderFinished={() => { setProgress(0) }} />
             <div className="w-full h-full flex justify-center items-center">
                 <div className="w-3/5 p-4 bg-gray-50 rounded-lg drop-shadow-xl">
                     <div className="text-slate-900 font-semibold text-2xl">Confirm details</div>
@@ -89,6 +95,13 @@ const ConfirmDetails = () => {
                             <div className="text-slate-500 font-semibold text-base">Time</div>
                             <div className="text-slate-900 font-semibold text-xl">{state.time}</div>
                         </div>
+                    </div>
+
+                    <div className="text-orange font-semibold text-lg mt-6">Cover Image</div>
+                    <div className="flex flex-row w-100 mt-1">
+                            <div>
+                                <img className='w-32 h-32 mr-5 rounded-lg place-items-center border-gray-100 border-solid border-4 box-border' src={state.coverImage} alt={state.name} />
+                            </div>
                     </div>
 
                     <div className="text-orange font-semibold text-lg mt-6">Images</div>

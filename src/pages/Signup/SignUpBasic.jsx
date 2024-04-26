@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
-import logo from '../assets/logo.png'
+import logo from '../../assets/logo.png'
 import { Link, useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { set, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { API_URL_USER } from '../constants'
+import { API_URL_USER } from '../../constants'
 import axios from 'axios'
+import LoadingBar from 'react-top-loading-bar'
 
 const SignUpBasic = () => {
 
   const navigate = useNavigate()
+  const [progress, setProgress] = useState(0)
 
   const schema = z.object({
     fullName: z.string().min(1, { message: 'Full name is required' }),
@@ -24,22 +26,28 @@ const SignUpBasic = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) })
 
   const onSubmit = (data) => {
-    axios.post(`${API_URL_USER}/checkEmail`, {email:data.email}).then(res => {
+    setProgress(50)
+    axios.post(`${API_URL_USER}/checkEmail`, { email: data.email }).then(res => {
       if (res.data.status == 200) {
+        setProgress(100)
         navigate('/signup/address', {
           state: data
         })
-      }else{
+      } else {
         alert('Email already exists')
+        setProgress(0)
       }
     }
     ).catch(err => {
       console.log(err)
+      setProgress(0)
     })
   }
 
   return (
-      <div className='p-4 bg-gray w-full h-full'>
+    <>
+    <LoadingBar color='#f11946' progress={progress} onLoaderFinished={() => setProgress(0)} />
+      <div className='p-4 bg-gray w-full min-h-screen'>
         <Link to={"/"}>
           <div className="flex flex-row items-center">
             <img src={logo} className='h-15 w-12' alt="" srcset="" />
@@ -91,7 +99,8 @@ const SignUpBasic = () => {
           </div>
         </div>
       </div>
-    )
-  }
+    </>
+  )
+}
 
-  export default SignUpBasic
+export default SignUpBasic

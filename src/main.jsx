@@ -8,9 +8,9 @@ import {
 } from "react-router-dom";
 import './index.css'
 import Home from './pages/Home.jsx';
-import SignUpBasic from './pages/SignUpBasic.jsx';
-import SignUpAddress from './pages/SignUpAddress.jsx';
-import VerifyEmail from './pages/VerifyEmail.jsx';
+import SignUpBasic from './pages/Signup/SignUpBasic.jsx';
+import SignUpAddress from './pages/Signup/SignUpAddress.jsx';
+import VerifyEmail from './pages/Signup/VerifyEmail.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import UserState from './context/users/UserState.jsx';
 import CreateAuctionBasic from './pages/CreateAuction/CreateAuctionBasic.jsx';
@@ -19,7 +19,11 @@ import CreateAuctionSchedule from './pages/CreateAuction/CreateAuctionSchedule.j
 import CreateAuctionUpload from './pages/CreateAuction/CreateAuctionUpload.jsx';
 import ConfirmDetails from './pages/CreateAuction/ConfirmDetails.jsx';
 import Success from './pages/CreateAuction/Success.jsx';
-import AuctionDetails from './pages/AuctionDetails.jsx';
+import AuctionDetails from './pages/AuctionDetails/AuctionDetails.jsx';
+import CoverImage from './pages/CreateAuction/CoverImage.jsx';
+import WaitingRoom from './pages/WaitingRoom.jsx';
+import Stage from './pages/Stage.jsx';
+import AuctionReport from './pages/AuctionReport.jsx';
 
 const router = createBrowserRouter([
   { path: '/', element: <Home /> },
@@ -31,10 +35,14 @@ const router = createBrowserRouter([
   { path: '/create', element: <CreateAuctionBasic /> },
   { path: '/create/price-details', element: <CreateAuctionPrice /> },
   { path: '/create/schedule', element: <CreateAuctionSchedule /> },
+  { path: '/create/cover', element: <CoverImage /> },
   { path: '/create/upload', element: <CreateAuctionUpload /> },
   { path: '/create/confirm', element: <ConfirmDetails /> },
-  { path: '/create/success', element: <Success />},
-  {path:"/auction/:id",element:<AuctionDetails/>},
+  { path: '/create/success', element: <Success /> },
+  { path: "/auction/:id", element: <AuctionDetails /> },
+  { path: "/auction/waiting-room/:id", element: <WaitingRoom /> },
+  { path: "/auction/stage/:id", element: <Stage /> },
+  { path: "/auction/report/:id", element: <AuctionReport /> },
   { path: '*', element: <div>404</div> },
 ])
 

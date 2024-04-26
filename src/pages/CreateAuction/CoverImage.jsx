@@ -6,26 +6,24 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { v4 } from 'uuid'
 import LoadingBar from 'react-top-loading-bar'
 
+
 const CreateAuctionUpload = () => {
-
-
+    const [progress, setprogress] = useState(0)
     const navigate = useNavigate();
     const { state } = useLocation()
-    console.log(state)
-    const [images, setImages] = useState([])
-    const [progress, setprogress] = useState(0)
-    const imageURLS = []
+    const [coverImage, setCoverImage] = useState([])
 
 
     const uploadImage = () => {
-        if (images.length === 0) {
+        setprogress(20)
+        if (coverImage.length === 0) {
             return
         }
-        if (images.length > 5) {
-            alert('You can only upload upto 5 images')
+        if(coverImage.length > 1){
+            console.log("Multiple files not supported")
             return
         }
-        images.map((image) => {
+        coverImage.map((image) => {
             setprogress(50)
             const id = v4()
             const storageRef = ref(storage, `images/${image.name + id}`)
@@ -44,25 +42,22 @@ const CreateAuctionUpload = () => {
                     }
                 },
                 (error) => {
+                    setprogress(0)
                     console.log(error)
                 },
                 () => {
                     setprogress(70)
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         console.log('File available at', downloadURL);
-                        imageURLS.push(downloadURL)
-                        console.log(imageURLS)
-                        if (imageURLS.length === images.length) {
-                            console.log("all sone")
-                            console.log(state)
-                            setprogress(100)
-                            navigate('/create/confirm', {
-                                state: {
-                                    ...state,
-                                    images: imageURLS
-                                }
-                            })
-                        }
+                        console.log("all sone")
+                        console.log(state)
+                        setprogress(100)
+                        navigate('/create/upload', {
+                            state: {
+                                ...state,
+                                coverImage: downloadURL
+                            }
+                        })
                     });
                 }
             );
@@ -77,37 +72,35 @@ const CreateAuctionUpload = () => {
             <div className="flex flex-col mt-10 mb-10 w-full h-full items-center">
                 <div className="flex flex-row w-3/5 bg-gray-50  rounded-lg drop-shadow-lg">
                     <div className="w-full py-4 px-6 box-border flex flex-col">
-                        <div className="mt-5 text-black text-3xl font-semibold">Images/Video upload</div>
+                        <div className="mt-5 text-black text-3xl font-semibold">Cover image upload</div>
                         <div className="text-sm mt-1 text-black">
-                            Upload upto 5 images and/or videos of the product you want to auction
+                            Upload the cover image for your auction
                         </div>
 
                         <div className="bg-gray-100 w-full h-56 mt-5 rounded-lg flex flex-col items-center justify-center">
                             <div className="text-lg font-slate-600">
-                                Drag and drop files here
+                                Drag and drop file here
                             </div>
 
                             <div className="text-sm font-slate-400 mt-2">
-                                or {imageURLS.map((url) => {
-                                    return `${url}`
-                                })}
+                                or 
                             </div>
 
                             <div className="flex flex-row items-center justify-center mt-2">
                                 <label className="drop-shadow-md py-1 px-6 flex flex-row items-center text-lg justify-center font-semibold w-fit  text-orange  bg-transparent border-orange border-solid border-2 rounded-md mt-4 box-border hover:cursor-pointer">
                                     Browse
-                                    <input type="file" accept="video/mp4,video/x-m4v,video/*,image/*" multiple className="hidden" onChange={(e) => {
-                                        setImages([...images, ...e.target.files])
+                                    <input type="file" accept="image/*" className="hidden" onChange={(e) => {
+                                        setCoverImage([...coverImage, ...e.target.files])
                                     }} />
                                 </label>
                             </div>
 
                         </div>
-                        {(images.length > 0) ?
+                        {(coverImage.length > 0) ?
                             <div>
-                                <div className="flex flex-row flex-wrap gap-5 items-center mt-5 ">
-                                    {images.map((image) => {
-                                        return <img className='w-32 h-32 mr-5 rounded-lg place-items-center border-gray-100 border-solid border-4 box-border' src={URL.createObjectURL(image)} alt={image.name} />
+                                <div className="flex flex-row flex-wrap gap-5 items-center justify-center mt-5 ">
+                                    {coverImage.map((image) => {
+                                        return <img className='w-72 h-72 mr-5 rounded-lg place-items-center border-gray-100 border-solid border-4 box-border' src={URL.createObjectURL(image)} alt={image.name} />
                                     })}
                                 </div>
 
